@@ -1,1 +1,42 @@
-cftest
+{
+  "Parameters": {
+    "KeyName": {
+      "Description": "The EC2 Key Pair for SSH access",
+      "Type": "AWS::EC2::KeyPair::KeyName"
+    }
+  },
+  "Resources": {
+    "CFExampleInstance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "SecurityGroups": [ { "Ref": "CFSSHAccess" } ],
+        "KeyName": { "Ref": "KeyName" },
+        "ImageId": "ami-97785bed",
+        "InstanceType": "t2.micro"
+      }
+    },
+    "CFSSHAccess": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "SSH access",
+        "SecurityGroupIngress": [ {
+          "IpProtocol": "tcp",
+          "FromPort": "22",
+          "ToPort": "22",
+          "CidrIp": "0.0.0.0/0"
+		  },
+		  {
+          "IpProtocol": "tcp",
+          "FromPort": "80",
+          "ToPort": "80",
+          "CidrIp": "0.0.0.0/0"},
+	  {
+	  "IpProtocol": "tcp",
+          "FromPort": "3306",
+          "ToPort": "3306",
+          "CidrIp": "0.0.0.0/0"
+			} ]
+		}
+	}
+  }
+}
